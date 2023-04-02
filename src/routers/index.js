@@ -1,10 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
-const initUserRoutes = require('./user.router');
+const initAuthRouters = require('./auth.router');
+const initUserRouters = require('./user.router');
+
 
 let initWebRouters = (app) => {
-    initUserRoutes(app);
+    initAuthRouters(app);
+    initUserRouters(app);
     return app.use("/",router);
 }
 

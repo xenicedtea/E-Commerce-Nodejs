@@ -10,6 +10,8 @@ const initWebrouter = require('./src/routers/index.js')
 
 
 //START CONFIG========================================================================
+// config env________________________________________________________________________
+require('dotenv').config()
 // config body parser________________________________________________________________________
 const bodyParserJSON = bodyParser.json();
 const bodyParserURLEncoded = bodyParser.urlencoded({extended:true});
