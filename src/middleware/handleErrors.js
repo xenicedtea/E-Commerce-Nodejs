@@ -5,8 +5,22 @@ const handleErrors = (res, error) => {
     if (error.message === 'Missing value!') {
       return res.status(422).json({ message: 'Please provide all the required information to create an account.' });
     }
+
+    // product
+    if (error.message === 'Slug already exists') {
+      return res.status(409).json({ message: 'Slug already exists.' });
+    }
+
+    console.log(error);
     // handle other errors
     res.status(500).json({ message: 'Something went wrong!' });
+
+
+
+
+
 }
 
-module.exports = handleErrors;
+module.exports = {
+  handleErrors,
+};

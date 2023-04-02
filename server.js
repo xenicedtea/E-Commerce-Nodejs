@@ -1,10 +1,10 @@
 const express = require('express');
 const app = express();
 const cors = require('cors')
-const properties = require('./src/config/properties.config');
-const PORT = properties.PORT;
 const bodyParser = require('body-parser');
 const initWebrouter = require('./src/routers/index.js')
+require('dotenv').config();
+const {PORT} = process.env
 
 // IMPORT=============================================================================
 

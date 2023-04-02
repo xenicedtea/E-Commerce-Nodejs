@@ -44,7 +44,7 @@ let login = async(email, password) => {
       email: {
         [Op.eq]: email
       }
-    }
+    },raw:true
   });
   if (!existingUser) {
     throw new Error('Account not found');
@@ -61,7 +61,7 @@ let login = async(email, password) => {
   const refreshToken = jwt.sign({ userId: existingUser.id }, REFRESH_TOKEN_SECRET, { expiresIn: REFRESH_TOKEN_EXPIRESIN });
    
   // Return user and token
-  userResult = existingUser.dataValues;
+  userResult = existingUser;
   return  {
             user:{
               name:userResult.name,
@@ -74,11 +74,16 @@ let login = async(email, password) => {
           };
 }
 
-let refreshToken = (token) => {
+let refreshToken = async(token) => {
     // decode
     const decode = jwt.verify(token, REFRESH_TOKEN_SECRET)
     // get user
-    const accesstoken = jwt.sign({userId: decode.userId}, REFRESH_TOKEN_SECRET, {expiresIn: REFRESH_TOKEN_EXPIRESIN})
+    const user = await db.user.findOne({
+      where:{
+        id:decode.userId
+      },raw:true
+    })
+    const accesstoken = jwt.sign({ userId: user.id, role: user.admin}, ACCESS_TOKEN_SECRET, { expiresIn: ACCESS_TOKEN_EXPIRESIN});
     return accesstoken
 }
 module.exports = {

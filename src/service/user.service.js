@@ -1,8 +1,8 @@
 const db = require('../db/models/index')
-require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const { Op } = require('sequelize');
 const bcrypt = require('bcrypt');
+require('dotenv').config();
 const {SALT_ROUNDS, ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET} = process.env
 let  changePassword = async (oldPassword,newPassword,token) => {
     // check exist
@@ -11,7 +11,7 @@ let  changePassword = async (oldPassword,newPassword,token) => {
     }
 
     // decode get user
-    const decoded = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    const decoded = await jwt.verify(token, ACCESS_TOKEN_SECRET);
     const user = await db.user.findOne({
         where:  {
                     id: decoded.userId

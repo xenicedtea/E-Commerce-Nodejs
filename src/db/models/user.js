@@ -17,21 +17,13 @@ module.exports = function(sequelize, DataTypes) {
       unique: "uq_email"
     },
     password: {
-      type: DataTypes.STRING(32),
+      type: DataTypes.STRING(255),
       allowNull: false
     },
     admin: {
       type: DataTypes.TINYINT,
       allowNull: false,
       defaultValue: 0
-    },
-    accessToken: {
-      type: DataTypes.STRING(255),
-      allowNull: true
-    },
-    refressToken: {
-      type: DataTypes.STRING(255),
-      allowNull: true
     },
     registered_at: {
       type: DataTypes.DATE,
@@ -42,6 +34,11 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.DATE,
       allowNull: true,
       defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    vendor: {
+      type: DataTypes.TINYINT,
+      allowNull: false,
+      defaultValue: 0
     }
   }, {
     sequelize,
