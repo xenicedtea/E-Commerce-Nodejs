@@ -2,11 +2,11 @@ const slugify = require('slugify');
 const db = require('../db/models/index')
 const { Op } = require('sequelize');
 
-let newProduct = async(newProduct) => {
+let newProduct = async(newProduct, categoryId = null) => {
     // create slug if null
     if(!newProduct.slug){
         const unique = Date.now();
-        const title = "Áo thun nam";
+        const title = newProduct.title;
         const slug = slugify(title, { lower: true }) + '-' + unique ; 
         newProduct.slug = slug;
     }else{
@@ -24,10 +24,34 @@ let newProduct = async(newProduct) => {
     }
 
     //create product
-    const product = db.product.create(newProduct);
+    const product = await db.product.create(newProduct);
+    // link product to category
+    if(categoryId){
+        const categoryFound = await db.category.findOne({
+            where:{
+                id:{
+                    [Op.eq]: categoryId
+                }
+            },raw:true
+        })
+        if(!categoryFound){
+            throw new Error("Category not found")
+        }
+        else{
+            await  db.product_category.create({
+                productId:product.id,
+                categoryId:categoryFound.id
+            })
+        }
+    }
+
     return product;
 }
 
+let getAllProductsByCategory = async(categoryId) => {
+
+}
 module.exports = {
     newProduct,
+    getAllProductsByCategory
 }

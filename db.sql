@@ -50,6 +50,7 @@ CREATE TABLE `category` (
   `metaTitle` VARCHAR(100) NULL DEFAULT NULL,
   `slug` VARCHAR(100) NOT NULL,
   `content` TEXT NULL DEFAULT NULL,
+  `active` bool default 0,
   INDEX `idx_category_parent` (`parentId` ASC),
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_category_parent`
@@ -58,6 +59,9 @@ CREATE TABLE `category` (
 	  ON DELETE NO ACTION
 	  ON UPDATE NO ACTION
 );
+select * from `category`;
+alter table `category`
+add column `active` bool default 1;
 
 CREATE TABLE `product_category` (
   `productId` BIGINT NOT NULL,
@@ -75,4 +79,40 @@ CREATE TABLE `product_category` (
     REFERENCES `category` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
+update `category`
+set parentId = 2
+where id = 3;
+	
+    
+SELECT p.*
+FROM product p
+INNER JOIN product_category pc ON p.id = pc.productId
+INNER JOIN category c ON pc.categoryId = c.id
+WHERE c.id = 2 OR c.parentId = 2;
 
+
+SELECT p.*
+FROM product p
+INNER JOIN product_category pc ON p.id = pc.productId
+INNER JOIN category c ON pc.categoryId = c.id OR c.parentId = 2
+WHERE c.id = 2 OR c.parentId = 2;
+
+use `jamsieshop`;
+select * from user;
+select * from product;
+select * from category;
+select * from product_category;
+
+select * from product join product_category;
+
+select * from product_category join category;
+
+insert into `product_category`(productId, categoryId)values 
+(6,2),
+(7,2),
+(8,2);
+
+
+select * from product;
+
+select * from product

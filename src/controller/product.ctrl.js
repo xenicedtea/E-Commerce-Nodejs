@@ -1,14 +1,12 @@
-const e = require('cors');
 const prodService = require('../service/product.service')
 const {handleErrors} = require('../middleware/handleErrors');
 const {getUserIdFromToken} = require('../util/getIdUserFromToken');
-const { request } = require('express');
-let newProduct = async(req,res,next) => {
+let newProduct= async(req,res,next) => {
    try {
         let accessToken = req.headers.authorization
         accessToken = accessToken && accessToken.split(" ")[1]
         const userId = await getUserIdFromToken(accessToken);
-        const { title, metaTitle,slug, summary, type, sku, price, discount, quantity, shop, content } = req.body;
+        const { title, metaTitle,slug, summary, type, sku, price, discount, quantity, shop, content, categoryId } = req.body;
         if (!title || !sku || !price || !quantity) {
             return res.status(400).json({ message: 'Title, SKU, Price, and Quantity are required fields' });
         }
@@ -27,8 +25,7 @@ let newProduct = async(req,res,next) => {
             shop: shop || undefined,
             content: content || undefined,
         };
-
-        const result = await prodService.newProduct(newProduct);
+        const result = await prodService.newProduct(newProduct, categoryId);
         res.json({
             success:true,
             data:{
@@ -40,6 +37,21 @@ let newProduct = async(req,res,next) => {
     }
 }
 
+let getAllProductsByCategory = async(req,res,next) => {
+    try {
+        const result = await prodService.getAllProductsByCategory(categoryId);
+        res.json({
+            success:true,
+            data:{
+                products:result
+            }
+        })
+    } catch (error) {
+        handleErrors(res,error);
+    }
+}
+
 module.exports = {
     newProduct,
+    getAllProductsByCategory,
 }

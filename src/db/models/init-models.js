@@ -4,7 +4,7 @@ var _product = require("./product");
 var _product_category = require("./product_category");
 var _user = require("./user");
 
-function initModels(sequelize) {
+function initModels(sequelize){
   var category = _category(sequelize, DataTypes);
   var product = _product(sequelize, DataTypes);
   var product_category = _product_category(sequelize, DataTypes);
