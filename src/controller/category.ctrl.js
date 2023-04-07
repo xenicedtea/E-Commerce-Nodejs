@@ -2,7 +2,7 @@ const catService = require('../service/category.service')
 const {handleErrors} = require('../middleware/handleErrors');
 let newCategory = async(req,res,next) => {
    try {
-        const { parentId, title, metaTitle, slug, content, active } = req.body;
+        const {parentId, title, metaTitle, slug, content, active } = req.body;
         if (!title) {
             return res.status(400).json({ message: 'Title is required fields' });
         }

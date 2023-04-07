@@ -48,10 +48,40 @@ let newProduct = async(newProduct, categoryId = null) => {
     return product;
 }
 
-let getAllProductsByCategory = async(categoryId) => {
+let updateProduct = async(newProduct) => {
+    //check product exist
+    console.log(newProduct.id)
+    const prodExist = await db.product.findOne({ where: { id: newProduct.id } });
+    if (!prodExist) {
+        throw new Error('Product not found');
+    }
+    console.log("HIIHIHIHIHIH")
 
+    // check unique slug
+    if(newProduct.slug){
+        const productSlug = await db.product.findOne({
+            where:{
+                slug:{
+                    [Op.eq]: newProduct.slug
+                }
+            },raw:true
+        })
+        if(productSlug){
+            throw new Error("Slug already exists")
+        }
+    }
+    
+    //create product
+    const product = await db.product.update(newProduct, {where: {
+        id:{
+            [Op.eq]: newProduct.id
+        }
+    }});
+    return product;
 }
+
+
 module.exports = {
     newProduct,
-    getAllProductsByCategory
+    updateProduct,
 }
