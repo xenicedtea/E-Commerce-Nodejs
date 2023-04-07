@@ -12,7 +12,11 @@ const handleErrors = (res, error) => {
       return res.status(409).json({ message: 'Slug already exists.' });
     }
 
-    if (error.message === 'Product not found') {
+    if (error.message === 'Product not found.') {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    if (error.message === 'Category not found.') {
       return res.status(404).json({ error: 'Product not found' });
     }
     

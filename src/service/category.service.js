@@ -36,6 +36,37 @@ let newCategory = async(newCategory) => {
     return category;
 }
 
+let updateCategory = async(category) => {
+    //check category exist
+    let categoryExist = await db.category.findOne({
+        where: {
+            id:{
+                [Op.eq]:category.id
+            }
+        }
+        ,raw:true
+    })
+
+    if(!categoryExist){
+        throw new Error('Category Not Found.')
+    }
+
+    console.log(categoryExist.id)
+
+    //update
+    let categoryUpdate = await db.category.update(
+        category,
+        {
+            where:{
+                id:{
+                    [Op.eq]:categoryExist.id
+                }
+            }
+        }
+    )
+    return categoryUpdate
+}
+
 let getAllProductsByCategory = async(categorySlug,subCategorySlug) => {
     // get id of category by slug
     const category = await db.category.findOne({
@@ -113,6 +144,7 @@ let getAllCategoryActive = async() => {
 
 module.exports = {
     newCategory,
+    updateCategory,
     getAllProductsByCategory,
     getAllCategory, 
     getAllCategoryActive,

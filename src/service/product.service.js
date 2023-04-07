@@ -53,9 +53,8 @@ let updateProduct = async(newProduct) => {
     console.log(newProduct.id)
     const prodExist = await db.product.findOne({ where: { id: newProduct.id } });
     if (!prodExist) {
-        throw new Error('Product not found');
+        throw new Error('Product not found.');
     }
-    console.log("HIIHIHIHIHIH")
 
     // check unique slug
     if(newProduct.slug){

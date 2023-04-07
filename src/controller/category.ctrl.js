@@ -1,5 +1,7 @@
 const catService = require('../service/category.service')
 const {handleErrors} = require('../middleware/handleErrors');
+const { category } = require('../db/models');
+
 let newCategory = async(req,res,next) => {
    try {
         const {parentId, title, metaTitle, slug, content, active } = req.body;
@@ -16,11 +18,41 @@ let newCategory = async(req,res,next) => {
             active:active
         };
 
-const result = await catService.newCategory(newCategory);
+        const result = await catService.newCategory(newCategory);
         res.json({
             success:true,
             data:{
                 product:result
+            }
+        })
+    } catch (error) {
+        handleErrors(res,error);
+    }
+}
+
+let updateCategory  = async(req,res,next) => {
+    try {
+        const {id, parentId, title, metaTitle, slug, content, active } = req.body;
+        if (!title) {
+            return res.status(400).json({ message: 'Title is required fields' });
+        }
+
+        const CategoryUpdate = {
+            id:id,
+            parentId:parentId,
+            title: title, 
+            metaTitle: metaTitle, 
+            slug: slug, 
+            content: content,
+            active:active
+        };
+
+        const categoryResult = await catService.updateCategory(CategoryUpdate);
+
+        res.json({
+            success: true,
+            data:{
+                category: categoryResult
             }
         })
     } catch (error) {
@@ -79,6 +111,7 @@ let getAllCategoryActive = async (req,res,next) => {
 
 module.exports = {
     newCategory,
+    updateCategory,
     getAllProductsByCategory,
     getAllCategory, 
     getAllCategoryActive,
