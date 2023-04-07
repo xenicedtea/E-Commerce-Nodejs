@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-
+const {checkAuthorization,checkAuthorizationAdmin} = require('../middleware/auth.middleware')
 const {changePassword} = require('../controller/user.ctrl')
 
 let initUserRouters = (app) => {
     
-    router.post('/change/password',changePassword);
+    router.post('/change/password',checkAuthorization,changePassword);
     app.use("/api/account",router);
 }
 

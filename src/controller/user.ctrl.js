@@ -4,7 +4,6 @@ let changePassword = async(req,res,next) => {
 	try {
 		// get variable
 		const authHeader = req.headers.authorization;
-		console.log(authHeader)
   		const token = authHeader && authHeader.split(' ')[1];
 		const {old_password, new_password} = req.body;
 		// change password
