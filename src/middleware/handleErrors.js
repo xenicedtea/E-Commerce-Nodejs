@@ -26,14 +26,20 @@ const handleErrors = (res, error) => {
       return res.status(404).json({ message: 'Category not found.' });
     }
 
+    
+
+    // supplier=======================================================================================
+    if (error.message === 'Supplier not found') {
+      return res.status(404).json({ message: 'Category not found.'});
+    }
+
+    if (error.message === 'Missing required field') {
+      return res.status(404).json({ message: 'Missing required field.'});
+    }
+
     console.log(error);
     // handle other errors
     res.status(500).json({ message: 'Something went wrong!' });
-
-
-
-
-
 }
 
 module.exports = {

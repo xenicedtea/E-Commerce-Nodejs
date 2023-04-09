@@ -51,7 +51,7 @@ CREATE TABLE `category` (
   `slug` VARCHAR(100) NOT NULL,
   `content` TEXT NULL DEFAULT NULL,
   `active` bool default 0,
-  INDEX `idx_category_parent` (`parentId` ASC),
+	INDEX `idx_category_parent` (`parentId` ASC),
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_category_parent`
 	  FOREIGN KEY (`parentId`)
@@ -79,40 +79,72 @@ CREATE TABLE `product_category` (
     REFERENCES `category` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
-update `category`
-set parentId = 2
-where id = 3;
-	
     
-SELECT p.*
-FROM product p
-INNER JOIN product_category pc ON p.id = pc.productId
-INNER JOIN category c ON pc.categoryId = c.id
-WHERE c.id = 2 OR c.parentId = 2;
+drop table `supplier`;
+CREATE TABLE `supplier` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(50) NOT NULL,
+  `contact_name` VARCHAR(50),
+  `email` VARCHAR(50),
+  `phone` VARCHAR(20),
+  `address` VARCHAR(100),
+  `city` VARCHAR(50),
+  `state` VARCHAR(50),
+  `zip_code` VARCHAR(10),
+  `country` VARCHAR(50),
+  `active` bool not null default 1,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `uq_email` (`email` ASC)
+);
 
+select * from supplier;
 
-SELECT p.*
-FROM product p
-INNER JOIN product_category pc ON p.id = pc.productId
-INNER JOIN category c ON pc.categoryId = c.id OR c.parentId = 2
-WHERE c.id = 2 OR c.parentId = 2;
+drop table `inbound_orders`;
+CREATE TABLE `inbound_orders` (
+	`id` BIGINT NOT NULL AUTO_INCREMENT,
+	`supplierId` BIGINT NOT NULL,
+	`total` FLOAT NOT NULL DEFAULT 0,
+	`status` TINYINT NOT NULL DEFAULT 0,
+	`createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	`updatedAt` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`),
+	INDEX `idx_inbound_order_supplier` (`supplierId` ASC),
+	CONSTRAINT `fk_inbound_order_supplier`
+		FOREIGN KEY (`supplierId`)
+		REFERENCES `supplier` (`id`)
+		ON DELETE NO ACTION
+		ON UPDATE NO ACTION
+);
+
+drop table `inbound_order_items`;
+CREATE TABLE `inbound_order_items` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `orderId` BIGINT NOT NULL,
+  `productId` BIGINT NOT NULL,
+  `quantity` SMALLINT NOT NULL DEFAULT 0,
+  `unitPrice` FLOAT NOT NULL DEFAULT 0,
+  `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  INDEX `idx_inbound_order_item_order` (`orderId` ASC),
+  INDEX `idx_inbound_order_item_product` (`productId` ASC),
+  CONSTRAINT `fk_inbound_order_item_order`
+    FOREIGN KEY (`orderId`)
+    REFERENCES `inbound_orders` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_inbounde_order_item_product`
+    FOREIGN KEY (`productId`)
+    REFERENCES `product` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
 
 use `jamsieshop`;
 select * from user;
 select * from product;
 select * from category;
 select * from product_category;
-
-select * from product join product_category;
-
-select * from product_category join category;
-
-insert into `product_category`(productId, categoryId)values 
-(6,2),
-(7,2),
-(8,2);
+select * from suppliers;
 
 
-select * from product;
-
-select * from product
