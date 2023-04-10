@@ -1,7 +1,7 @@
-CREATE SCHEMA `jamsieshop` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+											CREATE SCHEMA `jamsieshop` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 use `jamsieshop`;
-drop table user;
-CREATE TABLE user (
+drop table users;
+CREATE TABLE users (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(50) NULL DEFAULT NULL,
   `email` VARCHAR(50) Not NULL,
@@ -14,8 +14,8 @@ CREATE TABLE user (
   UNIQUE INDEX `uq_email` (`email` ASC)
 );
 
-drop table product;
-CREATE TABLE `product` (
+drop table products;
+CREATE TABLE `products` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `userId` BIGINT NOT NULL,
   `title` VARCHAR(75) NOT NULL,
@@ -39,11 +39,11 @@ CREATE TABLE `product` (
   INDEX `idx_product_user` (`userId` ASC),
   CONSTRAINT `fk_product_user`
     FOREIGN KEY (`userId`)
-    REFERENCES `user` (`id`)
+    REFERENCES `users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
-CREATE TABLE `category` (
+CREATE TABLE `categories` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `parentId` BIGINT NULL DEFAULT NULL,
   `title` VARCHAR(75) NOT NULL,
@@ -55,12 +55,12 @@ CREATE TABLE `category` (
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_category_parent`
 	  FOREIGN KEY (`parentId`)
-	  REFERENCES `category` (`id`)
+	  REFERENCES `categories` (`id`)
 	  ON DELETE NO ACTION
 	  ON UPDATE NO ACTION
 );
-select * from `category`;
-alter table `category`
+select * from `categories`;
+alter table `categories`
 add column `active` bool default 1;
 
 CREATE TABLE `product_category` (
@@ -71,17 +71,17 @@ CREATE TABLE `product_category` (
   INDEX `idx_pc_product` (`productId` ASC),
   CONSTRAINT `fk_pc_product`
     FOREIGN KEY (`productId`)
-    REFERENCES `product` (`id`)
+    REFERENCES `products` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_pc_category`
     FOREIGN KEY (`categoryId`)
-    REFERENCES `category` (`id`)
+    REFERENCES `categories` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
-    
-drop table `supplier`;
-CREATE TABLE `supplier` (
+
+drop table `suppliers`;
+CREATE TABLE `suppliers` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(50) NOT NULL,
   `contact_name` VARCHAR(50),
@@ -97,7 +97,7 @@ CREATE TABLE `supplier` (
   UNIQUE INDEX `uq_email` (`email` ASC)
 );
 
-select * from supplier;
+select * from suppliers;
 
 drop table `inbound_orders`;
 CREATE TABLE `inbound_orders` (
@@ -111,7 +111,7 @@ CREATE TABLE `inbound_orders` (
 	INDEX `idx_inbound_order_supplier` (`supplierId` ASC),
 	CONSTRAINT `fk_inbound_order_supplier`
 		FOREIGN KEY (`supplierId`)
-		REFERENCES `supplier` (`id`)
+		REFERENCES `suppliers` (`id`)
 		ON DELETE NO ACTION
 		ON UPDATE NO ACTION
 );
@@ -135,16 +135,27 @@ CREATE TABLE `inbound_order_items` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_inbounde_order_item_product`
     FOREIGN KEY (`productId`)
-    REFERENCES `product` (`id`)
+    REFERENCES `products` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 );
 
 use `jamsieshop`;
-select * from user;
-select * from product;
-select * from category;
+select * from users;
+select * from products;
+select * from categories;
 select * from product_category;
 select * from suppliers;
+select * from inbound_orders;
+select * from inbound_order_items;
+
+drop table users;
+drop table products;
+drop table categories;
+drop table product_category;
+drop table suppliers;
+drop table inbound_orders;
+drop table inbound_order_items;
+
 
 

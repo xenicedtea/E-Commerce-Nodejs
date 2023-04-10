@@ -12,7 +12,7 @@ let  changePassword = async (oldPassword,newPassword,token) => {
 
     // decode get user
     const decoded = await jwt.verify(token, ACCESS_TOKEN_SECRET);
-    const user = await db.user.findOne({
+    const user = await db.users.findOne({
         where:  {
                     id: decoded.userId
                 },
@@ -33,7 +33,7 @@ let  changePassword = async (oldPassword,newPassword,token) => {
     const salt = await bcrypt.genSalt(SALT_ROUNDS);
     const hashedPassword = await bcrypt.hash(newPassword, salt);
     // update
-    const message = await  db.user.update(
+    const message = await  db.users.update(
         {
             password:hashedPassword
         },

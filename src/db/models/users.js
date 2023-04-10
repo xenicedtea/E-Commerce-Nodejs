@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('supplier', {
+  return sequelize.define('users', {
     id: {
       autoIncrement: true,
       type: DataTypes.BIGINT,
@@ -9,49 +9,40 @@ module.exports = function(sequelize, DataTypes) {
     },
     name: {
       type: DataTypes.STRING(50),
-      allowNull: false
-    },
-    contact_name: {
-      type: DataTypes.STRING(50),
       allowNull: true
     },
     email: {
       type: DataTypes.STRING(50),
-      allowNull: true,
+      allowNull: false,
       unique: "uq_email"
     },
-    phone: {
-      type: DataTypes.STRING(20),
-      allowNull: true
+    password: {
+      type: DataTypes.STRING(255),
+      allowNull: false
     },
-    address: {
-      type: DataTypes.STRING(100),
-      allowNull: true
-    },
-    city: {
-      type: DataTypes.STRING(50),
-      allowNull: true
-    },
-    state: {
-      type: DataTypes.STRING(50),
-      allowNull: true
-    },
-    zip_code: {
-      type: DataTypes.STRING(10),
-      allowNull: true
-    },
-    country: {
-      type: DataTypes.STRING(50),
-      allowNull: true
-    },
-    active: {
-      type: DataTypes.BOOLEAN,
+    admin: {
+      type: DataTypes.TINYINT,
       allowNull: false,
-      defaultValue: 1
+      defaultValue: 0
+    },
+    registered_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    update_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    vendor: {
+      type: DataTypes.TINYINT,
+      allowNull: false,
+      defaultValue: 0
     }
   }, {
     sequelize,
-    tableName: 'supplier',
+    tableName: 'users',
     timestamps: false,
     indexes: [
       {

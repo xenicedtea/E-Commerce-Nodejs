@@ -11,7 +11,7 @@ let newProduct = async(newProduct, categoryId = null) => {
         newProduct.slug = slug;
     }else{
         // check unique slug
-        const productSlug = await db.product.findOne({
+        const productSlug = await db.products.findOne({
             where:{
                 slug:{
                     [Op.eq]: newProduct.slug
@@ -24,10 +24,10 @@ let newProduct = async(newProduct, categoryId = null) => {
     }
 
     //create product
-    const product = await db.product.create(newProduct);
+    const product = await db.products.create(newProduct);
     // link product to category
     if(categoryId){
-        const categoryFound = await db.category.findOne({
+        const categoryFound = await db.categories.findOne({
             where:{
                 id:{
                     [Op.eq]: categoryId
@@ -38,7 +38,7 @@ let newProduct = async(newProduct, categoryId = null) => {
             throw new Error("Category not found")
         }
         else{
-            await  db.product_category.create({
+            await  db.product_categories.create({
                 productId:product.id,
                 categoryId:categoryFound.id
             })
@@ -51,14 +51,14 @@ let newProduct = async(newProduct, categoryId = null) => {
 let updateProduct = async(newProduct) => {
     //check product exist
     console.log(newProduct.id)
-    const prodExist = await db.product.findOne({ where: { id: newProduct.id } });
+    const prodExist = await db.products.findOne({ where: { id: newProduct.id } });
     if (!prodExist) {
         throw new Error('Product not found.');
     }
 
     // check unique slug
     if(newProduct.slug){
-        const productSlug = await db.product.findOne({
+        const productSlug = await db.products.findOne({
             where:{
                 slug:{
                     [Op.eq]: newProduct.slug
@@ -71,7 +71,7 @@ let updateProduct = async(newProduct) => {
     }
     
     //create product
-    const product = await db.product.update(newProduct, {where: {
+    const product = await db.products.update(newProduct, {where: {
         id:{
             [Op.eq]: newProduct.id
         }

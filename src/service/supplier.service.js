@@ -2,13 +2,13 @@ const db = require('../db/models/index');
 const {Op} = require('sequelize')
 let newSupplier = async(supplier) => {
     console.log(supplier)
-    const supplierResult = await db.supplier.create(supplier);
+    const supplierResult = await db.suppliers.create(supplier);
     return supplierResult;
 }
 
 let updateSupplier = async(supplier) => {
     //check exist
-    const supplierExist = await db.supplier.findOne({
+    const supplierExist = await db.suppliers.findOne({
         where:{
             id:{
                 [Op.eq]:supplier.id
@@ -20,7 +20,7 @@ let updateSupplier = async(supplier) => {
         throw new Error('Supplier not found')
     }
 
-    const supplierResult = await db.supplier.update(supplier,{
+    const supplierResult = await db.suppliers.update(supplier,{
         where:{
             id:{
                 [Op.eq]:supplier.id

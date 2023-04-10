@@ -7,7 +7,7 @@ const { Op } = require('sequelize');
 const {SALT_ROUNDS, ACCESS_TOKEN_SECRET, ACCESS_TOKEN_EXPIRESIN, REFRESH_TOKEN_SECRET, REFRESH_TOKEN_EXPIRESIN} = process.env
 let register = async(name, email, password) => {
   //check exist
-  const existingUser = await db.user.findOne({
+  const existingUser = await db.users.findOne({
     where: {
       email: {
         [Op.eq]: email
@@ -25,7 +25,7 @@ let register = async(name, email, password) => {
   const hashedPassword = await bcrypt.hash(password, salt);
 
   // save to db
-  const user = await db.user.create({
+  const user = await db.users.create({
     name: name,
     email: email,
     password: hashedPassword
@@ -39,7 +39,7 @@ let register = async(name, email, password) => {
 
 let login = async(email, password) => {
   //check exist
-  const existingUser = await db.user.findOne({
+  const existingUser = await db.users.findOne({
     where: {
       email: {
         [Op.eq]: email
@@ -78,7 +78,7 @@ let refreshToken = async(token) => {
     // decode
     const decode = jwt.verify(token, REFRESH_TOKEN_SECRET)
     // get user
-    const user = await db.user.findOne({
+    const user = await db.users.findOne({
       where:{
         id:decode.userId
       },raw:true

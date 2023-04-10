@@ -19,7 +19,7 @@ let newCategory = async(newCategory) => {
         newCategory.slug = slug;
     }else{
         // check unique slug
-        const categorySlug = await db.category.findOne({
+        const categorySlug = await db.categories.findOne({
             where:{
                 slug:{
                     [Op.eq]: newCategory.slug
@@ -32,13 +32,13 @@ let newCategory = async(newCategory) => {
     }
 
     //create category
-    const category = db.category.create(newCategory);
+    const category = db.categories.create(newCategory);
     return category;
 }
 
 let updateCategory = async(category) => {
     //check category exist
-    let categoryExist = await db.category.findOne({
+    let categoryExist = await db.categories.findOne({
         where: {
             id:{
                 [Op.eq]:category.id
@@ -54,7 +54,7 @@ let updateCategory = async(category) => {
     console.log(categoryExist.id)
 
     //update
-    let categoryUpdate = await db.category.update(
+    let categoryUpdate = await db.categories.update(
         category,
         {
             where:{
@@ -69,7 +69,7 @@ let updateCategory = async(category) => {
 
 let getAllProductsByCategory = async(categorySlug,subCategorySlug) => {
     // get id of category by slug
-    const category = await db.category.findOne({
+    const category = await db.categories.findOne({
         where:{
             slug:{
                 [Op.eq]: categorySlug
@@ -94,7 +94,7 @@ let getAllProductsByCategory = async(categorySlug,subCategorySlug) => {
 
     // if subcategory slug is not null
     // get id of subcategory by slug
-    const subCategory = await db.category.findOne({
+    const subCategory = await db.categories.findOne({
         where:{
             slug:{
                 [Op.eq]: subCategorySlug
@@ -108,7 +108,7 @@ let getAllProductsByCategory = async(categorySlug,subCategorySlug) => {
         throw new Error(`Category ${subCategorySlug} not found`)
     }
     // find all product by subcategory id
-    const products = await db.product.findAll({
+    const products = await db.products.findAll({
         include:[{
             model:db.product_category,
             as:'categories',
@@ -124,14 +124,14 @@ let getAllProductsByCategory = async(categorySlug,subCategorySlug) => {
 }
 
 let getAllCategory = async() => {
-    const categories =  await db.category.findAll({
+    const categories =  await db.categories.findAll({
         raw:true
     });
     return categories
 }
 
 let getAllCategoryActive = async() => {
-    const categories = await db.category.findAll({
+    const categories = await db.categories.findAll({
         where:{
             active:{
                 [Op.eq]: true

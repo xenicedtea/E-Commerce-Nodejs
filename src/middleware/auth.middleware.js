@@ -14,7 +14,7 @@ let checkAuthorization = async (req, res, next) => {
   try {
     // Giải mã token
     const decoded = await jwt.verify(token, ACCESS_TOKEN_SECRET);
-    const user = await db.user.findOne({
+    const user = await db.users.findOne({
       where:{
         id: decoded.userId
       }, raw:true
@@ -43,7 +43,7 @@ let checkAuthorizationAdmin = async (req, res, next) => {
   try {
     // Giải mã token
     const decoded = await jwt.verify(token, ACCESS_TOKEN_SECRET);
-    const user = await db.user.findOne({
+    const user = await db.users.findOne({
       where:{
         id: decoded.userId
       }, raw:true
