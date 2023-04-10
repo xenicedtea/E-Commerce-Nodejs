@@ -1,3 +1,15 @@
-# db first sequelizerc (automatically generate models)
-sequelize-auto -h <host> -d <database> -u <user> -x [password] -p [port]  --dialect [dialect] -c [/path/to/config] -o [/path/to/models]
-EX: sequelize-auto -o "./src/db/models" -d jamsieshop -h localhost -u root -p 3306 -x password -e mysql
+# Hello wellcome to my E-commerce Project
+
+## Database
+1. Excuse './db.sql' file to create database
+2. Config database on db config file: src.config.database.json
+## Run server
+- Install package: npm i || yarn
+- Run Server: npm start || yarn start
+## Router
+### Uses 'postman'
+- Open post man:
+* import collection: file > import... > Choose Files > (select all collection in PostMan folder (PostMan.Data.collection))
+* import environment:  file > import... > Choose Files > (select all environment in PostMan folder (PostMan.Data.environment))
+
+
