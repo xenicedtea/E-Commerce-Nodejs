@@ -1,13 +1,14 @@
 const db = require('../db/models/index');
+const {Op} = require ('sequelize')
 const { sequelize } = require('sequelize');
 //inbound
 //Thêm phiếu nhập kho
-let createInbound = async(supplierId, items) => {
+let createInbound = async(supplierId, status, items) => {
     // tao inbound order
     const inboundOrder = await db.inbound_orders.create({
         supplierId: supplierId,
 	    total: 0,
-	    status: 0,
+	    status: status,
     });
 
 
@@ -55,18 +56,114 @@ let createInbound = async(supplierId, items) => {
     return inboundOrder.id;
 }
 
-module.exports = {
-    createInbound,
+let getAllInBound = async() => {
+    const allInBound = await db.inbound_orders.findAll({
+        include: [{
+            model: db.inbound_order_items,
+            as: 'inbound_order_items',
+        }],
+    })
+    return allInBound;
 }
 
-//outbound
-//Thêm phiếu xuất kho
+let getAllInBoundCompleted = async() => {
+    const allInBound = await db.inbound_orders.findAll({
+        include: [{
+            model: db.inbound_order_items,
+            as: 'inbound_order_items',
+        }],
+        where:{
+            status:{
+                [Op.eq]:0
+            }
+        }
+    })
+    return allInBound;
+}
 
-//inventory
-//Thêm phiếu kiểm kho
+let getAllInBoundPending = async() => {
+    const allInBound = await db.inbound_orders.findAll({
+        include: [{
+            model: db.inbound_order_items,
+            as: 'inbound_order_items',
+        }],
+        where:{
+            status:{
+                [Op.eq]:1
+            }
+        }
+    })
+    return allInBound;
+}
 
-//Thống kê báo cáo
+let getAllInBoundProcessing = async() => {
+    const allInBound = await db.inbound_orders.findAll({
+        include: [{
+            model: db.inbound_order_items,
+            as: 'inbound_order_items',
+        }],
+        where:{
+            status:{
+                [Op.eq]:2
+            }
+        }
+    })
+    return allInBound;
+}
 
+let getAllInBoundUnPaid = async() => {
+    const allInBound = await db.inbound_orders.findAll({
+        include: [{
+            model: db.inbound_order_items,
+            as: 'inbound_order_items',
+        }],
+        where:{
+            status:{
+                [Op.eq]:3
+            }
+        }
+    })
+    return allInBound;
+}
 
+let getAllInBoundPaid = async() => {
+    const allInBound = await db.inbound_orders.findAll({
+        include: [{
+            model: db.inbound_order_items,
+            as: 'inbound_order_items',
+        }],
+        where:{
+            status:{
+                [Op.eq]:4
+            }
+        }
+    })
+    return allInBound;
+}
 
+let getAllInBoundCancle = async() => {
+    const allInBound = await db.inbound_orders.findAll({
+        include: [{
+            model: db.inbound_order_items,
+            as: 'inbound_order_items',
+        }],
+        where:{
+            status:{
+                [Op.eq]:5
+            }
+        }
+    })
+    return allInBound;
+}
 
+module.exports = {
+    createInbound,
+    getAllInBound,
+    getAllInBoundCompleted,
+    getAllInBoundCancle,
+    getAllInBoundCompleted,
+    getAllInBoundPending,
+    getAllInBoundProcessing,
+    getAllInBoundUnPaid,
+    getAllInBoundPaid,
+}
