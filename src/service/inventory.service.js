@@ -66,7 +66,7 @@ let getAllInBound = async() => {
     return allInBound;
 }
 
-let getAllInBoundCompleted = async() => {
+let getAllInBoundStatus = async(status) => {
     const allInBound = await db.inbound_orders.findAll({
         include: [{
             model: db.inbound_order_items,
@@ -74,82 +74,7 @@ let getAllInBoundCompleted = async() => {
         }],
         where:{
             status:{
-                [Op.eq]:0
-            }
-        }
-    })
-    return allInBound;
-}
-
-let getAllInBoundPending = async() => {
-    const allInBound = await db.inbound_orders.findAll({
-        include: [{
-            model: db.inbound_order_items,
-            as: 'inbound_order_items',
-        }],
-        where:{
-            status:{
-                [Op.eq]:1
-            }
-        }
-    })
-    return allInBound;
-}
-
-let getAllInBoundProcessing = async() => {
-    const allInBound = await db.inbound_orders.findAll({
-        include: [{
-            model: db.inbound_order_items,
-            as: 'inbound_order_items',
-        }],
-        where:{
-            status:{
-                [Op.eq]:2
-            }
-        }
-    })
-    return allInBound;
-}
-
-let getAllInBoundUnPaid = async() => {
-    const allInBound = await db.inbound_orders.findAll({
-        include: [{
-            model: db.inbound_order_items,
-            as: 'inbound_order_items',
-        }],
-        where:{
-            status:{
-                [Op.eq]:3
-            }
-        }
-    })
-    return allInBound;
-}
-
-let getAllInBoundPaid = async() => {
-    const allInBound = await db.inbound_orders.findAll({
-        include: [{
-            model: db.inbound_order_items,
-            as: 'inbound_order_items',
-        }],
-        where:{
-            status:{
-                [Op.eq]:4
-            }
-        }
-    })
-    return allInBound;
-}
-
-let getAllInBoundCancle = async() => {
-    const allInBound = await db.inbound_orders.findAll({
-        include: [{
-            model: db.inbound_order_items,
-            as: 'inbound_order_items',
-        }],
-        where:{
-            status:{
-                [Op.eq]:5
+                [Op.eq]:status
             }
         }
     })
@@ -159,11 +84,5 @@ let getAllInBoundCancle = async() => {
 module.exports = {
     createInbound,
     getAllInBound,
-    getAllInBoundCompleted,
-    getAllInBoundCancle,
-    getAllInBoundCompleted,
-    getAllInBoundPending,
-    getAllInBoundProcessing,
-    getAllInBoundUnPaid,
-    getAllInBoundPaid,
+    getAllInBoundStatus,
 }

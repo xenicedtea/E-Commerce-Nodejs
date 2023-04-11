@@ -25,59 +25,9 @@ let getAllInBound = async(req, res, next) => {
         }
     })
 }
-
-let getAllInBoundCompleted = async(req, res, next) => {
-    const inboundResult = await inventoryService.getAllInBoundCompleted();
-    res.json({
-        success:true,
-        data: {
-            inbound:inboundResult
-        }
-    })
-}
-
-let getAllInBoundPending = async(req, res, next) => {
-    const inboundResult = await inventoryService.getAllInBoundPending();
-    res.json({
-        success:true,
-        data: {
-            inbound:inboundResult
-        }
-    })
-}
-
-let getAllInBoundProcessing = async(req, res, next) => {
-    const inboundResult = await inventoryService.getAllInBoundProcessing();
-    res.json({
-        success:true,
-        data: {
-            inbound:inboundResult
-        }
-    })
-}
-
-let getAllInBoundPaid = async(req, res, next) => {
-    const inboundResult = await inventoryService.getAllInBoundPaid();
-    res.json({
-        success:true,
-        data: {
-            inbound:inboundResult
-        }
-    })
-}
-
-let getAllInBoundUnPaid = async(req, res, next) => {
-    const inboundResult = await inventoryService.getAllInBoundUnPaid();
-    res.json({
-        success:true,
-        data: {
-            inbound:inboundResult
-        }
-    })
-}
-
-let getAllInBoundCancle = async(req, res, next) => {
-    const inboundResult = await inventoryService.getAllInBoundCancle();
+let getAllInBoundStatus = async(req, res, next) => {
+    const {status} = req.params;
+    const inboundResult = await inventoryService.getAllInBoundStatus(status);
     res.json({
         success:true,
         data: {
@@ -93,11 +43,7 @@ let outbound =  (req,res,next) => {
 module.exports = {
     createInbound,
     getAllInBound,
-    getAllInBoundCancle,
-    getAllInBoundCompleted,
-    getAllInBoundPending,
-    getAllInBoundProcessing,
-    getAllInBoundUnPaid,
-    getAllInBoundPaid,
+    getAllInBoundStatus,
+   
     outbound,
 }
