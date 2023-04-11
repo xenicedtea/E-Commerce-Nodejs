@@ -1,17 +1,17 @@
 {
-  "collection": {
-    "066608d0-acee-4425-be5b-abc4fc9a2d2a": true,
-    "63d19891-0a44-4ee0-90ec-6da3424805f4": true,
-    "0e116994-ff72-40d7-9b46-9a149e1b60f7": true,
-    "7240276e-c081-467a-afa3-ffeed02dbdaf": true,
-    "b07fe184-c5da-45d3-bd30-eaffa95f0a1f": true,
-    "4c59ab64-0796-41ae-882c-c1b173147f2a": true,
-    "c0251b0a-deb0-40ef-92a9-8ffd794e61e5": true,
-    "f38ce396-67d8-4925-926f-b2e85ebcccef": true,
-    "edafdacb-f541-4f5a-bb85-b2a0216c043f": true,
-    "5ccf1c26-a896-4a9d-8075-8d7ba2f0a30c": true
-  },
   "environment": {
     "c14d8d0d-8939-4051-a19d-b2c55d539387": true
+  },
+  "collection": {
+    "c0251b0a-deb0-40ef-92a9-8ffd794e61e5": true,
+    "b07fe184-c5da-45d3-bd30-eaffa95f0a1f": true,
+    "4c59ab64-0796-41ae-882c-c1b173147f2a": true,
+    "0e116994-ff72-40d7-9b46-9a149e1b60f7": true,
+    "7240276e-c081-467a-afa3-ffeed02dbdaf": true,
+    "066608d0-acee-4425-be5b-abc4fc9a2d2a": true,
+    "f38ce396-67d8-4925-926f-b2e85ebcccef": true,
+    "63d19891-0a44-4ee0-90ec-6da3424805f4": true,
+    "edafdacb-f541-4f5a-bb85-b2a0216c043f": true,
+    "5ccf1c26-a896-4a9d-8075-8d7ba2f0a30c": true
   }
 }
