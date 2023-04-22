@@ -21,9 +21,9 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: 0
     },
     status: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.STRING(50),
       allowNull: false,
-      defaultValue: 0
+      defaultValue: "0"
     }
   }, {
     sequelize,

@@ -81,8 +81,129 @@ let getAllInBoundStatus = async(status) => {
     return allInBound;
 }
 
+let addCartItem = async(userId,productId,quantity) => {
+    let cartOnl;
+    //check cart status = 1
+    cartOnl = await db.cart.findOne({
+        where:{
+            status:{
+                [Op.eq]: 0
+            }
+        }, raw:true
+    })
+    //neu không có thì tạo cart trước
+    if (!cartOnl){
+        cartOnl = await db.cart.create({
+            userId: userId,
+        })
+    }
+    //thêm sản phẩm vào cart
+        //get product
+    const product = await db.products.findOne({
+            where:{
+                id:{
+                    [Op.eq]:productId
+                }
+            }
+        })
+    if(!product){
+        throw new error("Product not found.")
+    }
+    
+    const cartItem = await db.cart_item.create({
+        productId:productId,
+        cartId: cartOnl.id,
+        sku: product.sku,
+        price: product.price,
+        discount: product.discount,
+        quantity: quantity
+    })
+    return cartItem;
+}
+
+
+let getItemInCart = async(cartId) => {
+    const cart = await db.cart.findOne({
+        where:{
+            id:{
+                [Op.eq]:cartId
+            },
+            status:{
+                [Op.eq]:0
+            }
+        },raw:true
+    })
+
+    if(!cart){
+        throw new error("Cart not found or already paid");
+    }
+
+    const cartItem = await db.cart_item.findAll({
+        where:{
+            cartId:{
+                [Op.eq]:cartId
+            },
+        }, raw: true
+    })
+
+    if(!cartItem){
+        throw new error("Cart is empty")
+    }
+
+    return cartItem
+}
+
+
+let payCart = async(params) => {
+    const cart = await db.cart.findOne({
+        where:{
+            id:{
+                [Op.eq]:params.cartId
+            },
+            status:{
+                [Op.ne]:1
+            }
+        },raw:true
+    })
+
+    if(!cart){
+        throw new error("Cart not found");
+    }
+    else{
+        console.log("huhuh",cart)
+    }
+
+    const cartUpdate = {
+        status:1,
+        name:params.name,
+        mobile:params.mobile ,
+        email:params.email,
+        line1:params.line1,
+        line2:params.line2,
+        province:params.province,
+        country:params.country,
+        content:params.content
+    }
+    console.log(cartUpdate);
+
+    const cartUpdateResult = await db.cart.update(
+        cartUpdate,
+        {
+            where:{
+                id:{
+                    [Op.eq]:params.cartId
+                }
+            }, raw:true
+        }
+    )
+
+    return cartUpdateResult
+}
 module.exports = {
     createInbound,
     getAllInBound,
     getAllInBoundStatus,
+    addCartItem,
+    getItemInCart,
+    payCart
 }

@@ -5,7 +5,7 @@ const {changePassword} = require('../controller/user.ctrl')
 
 let initUserRouters = (app) => {
     
-    router.post('/change/password',checkAuthorization,changePassword);
+    router.patch('/change/password',checkAuthorization,changePassword);
     app.use("/api/account",router);
 }
 
