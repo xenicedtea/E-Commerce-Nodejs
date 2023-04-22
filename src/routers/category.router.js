@@ -4,7 +4,7 @@ const {newCategory, updateCategory, getAllProductsByCategory, getAllCategoryActi
 const {checkAuthorizationAdmin} = require('../middleware/auth.middleware')
 let initCategoryRouter = (app) => {
     router.post('/category', checkAuthorizationAdmin, newCategory);
-    router.post('/update', checkAuthorizationAdmin,updateCategory);
+    router.patch('/update', checkAuthorizationAdmin,updateCategory);
     router.get('/categories', checkAuthorizationAdmin, getAllCategory);
     router.get('/categories-active', getAllCategoryActive);
     router.get('/:categorySlug', getAllProductsByCategory);

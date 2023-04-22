@@ -5,7 +5,7 @@ const {register,login,refreshAccessToken} = require('../controller/auth.ctrl');
 let initAuthRouters = (app) => {
     router.post('/register',register);
     router.post('/login',login);
-    router.post('/refresh-token',refreshAccessToken);
+    router.patch('/refresh-token',refreshAccessToken);
     app.use("/api/auth",router);
 }
 

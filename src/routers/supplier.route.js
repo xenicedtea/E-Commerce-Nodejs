@@ -4,7 +4,7 @@ const {newSupplier,updateSupplier} = require('../controller/supplier.ctrl');
 const {checkAuthorizationAdmin} = require('../middleware/auth.middleware')
 let initSupplierRouter = (app) => {
     router.post('/supplier',checkAuthorizationAdmin, newSupplier);
-    router.post('/update',checkAuthorizationAdmin, updateSupplier);
+    router.patch('/update',checkAuthorizationAdmin, updateSupplier);
     app.use("/api/suppliers",router);
 }
 

@@ -140,6 +140,58 @@ CREATE TABLE `inbound_order_items` (
     ON UPDATE NO ACTION
 );
 
+CREATE TABLE `cart` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `userId` BIGINT NULL DEFAULT NULL,
+  `status` SMALLINT(6) NOT NULL DEFAULT 0,
+  `name` VARCHAR(50) NULL DEFAULT NULL,
+  `mobile` VARCHAR(15) NULL,
+  `email` VARCHAR(50) NULL,
+  `line1` VARCHAR(50) NULL DEFAULT NULL,
+  `line2` VARCHAR(50) NULL DEFAULT NULL,
+  `province` VARCHAR(50) NULL DEFAULT NULL,
+  `country` VARCHAR(50) NULL DEFAULT NULL,
+  `createdAt` DATETIME NOT NULL,
+  `updatedAt` DATETIME NULL DEFAULT NULL,
+  `content` TEXT NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `idx_cart_user` (`userId` ASC),
+  CONSTRAINT `fk_cart_user`
+    FOREIGN KEY (`userId`)
+    REFERENCES `users` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+    
+CREATE TABLE `cart_item` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `productId` BIGINT NOT NULL,
+  `cartId` BIGINT NOT NULL,
+  `sku` VARCHAR(100) NOT NULL,
+  `price` FLOAT NOT NULL DEFAULT 0,
+  `discount` FLOAT NOT NULL DEFAULT 0,
+  `quantity` SMALLINT(6) NOT NULL DEFAULT 0,
+  `createdAt` DATETIME NOT NULL,
+  `updatedAt` DATETIME NULL DEFAULT NULL,
+  `content` TEXT NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `idx_cart_item_product` (`productId` ASC),
+  CONSTRAINT `fk_cart_item_product`
+    FOREIGN KEY (`productId`)
+    REFERENCES `products` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+ALTER TABLE `cart_item` 
+ADD INDEX `idx_cart_item_cart` (`cartId` ASC);
+ALTER TABLE `cart_item` 
+ADD CONSTRAINT `fk_cart_item_cart`
+  FOREIGN KEY (`cartId`)
+  REFERENCES `cart` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+  
 use `jamsieshop`;
 select * from users;
 select * from products;
@@ -148,7 +200,9 @@ select * from product_category;
 select * from suppliers;
 select * from inbound_orders;
 select * from inbound_order_items;
-
+select * from cart;
+select * from cart_item;
+select * from cart inner join cart_item where cart.id = cart_item.cartId;
 drop table users;
 drop table products;
 drop table categories;
@@ -156,6 +210,5 @@ drop table product_category;
 drop table suppliers;
 drop table inbound_orders;
 drop table inbound_order_items;
-
 
 
