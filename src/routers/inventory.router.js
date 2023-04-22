@@ -20,7 +20,7 @@ let initInventoryRouter = (app) => {
     router.post('/cart/add-item', checkAuthorization, addCartItem)
     // router.post('/cart/cart-item-pay', checkAuthorization, getItemInCart)
     router.get('/cart/cart-item-pay', checkAuthorization, getItemInCart)
-    router.path('/cart/pay', checkAuthorization,payCart)
+    router.patch('/cart/pay', checkAuthorization,payCart)
     app.use("/api/inventory",router);
 }
 
