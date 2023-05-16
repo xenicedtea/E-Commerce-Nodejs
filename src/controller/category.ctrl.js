@@ -60,34 +60,27 @@ let updateCategory  = async(req,res,next) => {
     }
 }
 
-let getAllProductsByCategory = async(req,res,next) => {
-    try {
-        // get category slug and subcategory slug
-        const {categorySlug,subCategorySlug} = req.params;
-
-        // get products by category slug and subcategory slug
-        const result = await catService.getAllProductsByCategory(categorySlug,subCategorySlug);
-
-        res.json({
-            success:true,
-            data:{
-                products:result
-            }
-        })
-    } catch (error) {
-        handleErrors(res,error);
-    }
-}
-
 let getAllCategory = async (req,res,next) => {
     try {
-        const categories = await catService.getAllCategory()
-        res.json({
-            status:"success",
-            data:{
-                categories:categories
-            }
-        })
+        const search = req.query.search;
+        if (search) {
+            const categories = await catService.getCategoryByName(search)
+            res.json({
+                status:"success",
+                data:{
+                    categories:categories
+                }
+            })
+        } else {
+            const categories = await catService.getAllCategory()
+            res.json({
+                status:"success",
+                data:{
+                    categories:categories
+                }
+            })
+        }
+        
     } catch (error) {
         next(error)
     }
@@ -95,24 +88,36 @@ let getAllCategory = async (req,res,next) => {
 
 let getAllCategoryActive = async (req,res,next) => {
     try {
-        const categories = await catService.getAllCategoryActive()
-        res.json({
-            status:"success",
-            data:{
-                categories:categories
-            }
-        })
+
+        const search = req.query.search;
+        if (search) {
+            const categories = await catService.getCategoryByName(search,active = true)
+            res.json({
+                status:"success",
+                data:{
+                    categories:categories
+                }
+            })
+        } else {
+            const categories = await catService.getAllCategoryActive()
+            res.json({
+                status:"success",
+                data:{
+                    categories:categories
+                }
+            })
+        }
     } catch (error) {
         next(error)
     }
 } 
+
 
 // getAllCategory
 
 module.exports = {
     newCategory,
     updateCategory,
-    getAllProductsByCategory,
     getAllCategory, 
     getAllCategoryActive,
 }

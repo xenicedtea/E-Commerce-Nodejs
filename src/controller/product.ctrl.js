@@ -1,7 +1,7 @@
 const prodService = require('../service/product.service')
 const {handleErrors} = require('../middleware/handleErrors');
 const {getUserIdFromToken} = require('../util/getIdUserFromToken');
-let newProduct= async(req,res,next) => {
+const newProduct= async(req,res,next) => {
    try {
         let accessToken = req.headers.authorization
         accessToken = accessToken && accessToken.split(" ")[1]
@@ -37,7 +37,7 @@ let newProduct= async(req,res,next) => {
     }
 }
 
-let updateProduct = async(req,res,next) => {
+const updateProduct = async(req,res,next) => {
     try {
         // get user id
         let accessToken = req.headers.authorization
@@ -77,7 +77,55 @@ let updateProduct = async(req,res,next) => {
         handleErrors(res,error);
     }
 }
+
+const getAllProductsByCategory = async(req,res,next) => {
+    try {
+        // get category slug and subcategory slug
+        const {categorySlug,subCategorySlug} = req.params;
+
+        // get products by category slug and subcategory slug
+        const result = await prodService.getAllProductsByCategory(categorySlug,subCategorySlug);
+
+        res.json({
+            success:true,
+            data:{
+                products:result
+            }
+        })
+    } catch (error) {
+        handleErrors(res,error);
+    }
+}
+
+const getAllProducts = async(req,res,next) => {
+    try {
+        const search = req.query.search
+        if(search){
+            const result = await prodService.getAllProducts(search);
+            res.json({
+                success:true,
+                data:{
+                    products:result
+                }
+            })
+        }else{
+            const result = await prodService.getAllProducts();
+            res.json({
+                success:true,
+                data:{
+                    products:result
+                }
+            })
+        }
+        
+    } catch (error) {
+        handleErrors(res,error);
+    }
+}
+
 module.exports = {
     newProduct,
     updateProduct,
+    getAllProductsByCategory,
+    getAllProducts,
 }
